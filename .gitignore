@@ -1,30 +1,24 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# Default directory or file
+.DS_Store
+node_modules
+/dist
 
-# dependencies
-/node_modules
-bower_components
-/.pnp _
-.pnp.js
-
-# testing
-/coverage
-
-# production
-/build
-
-# misc
-.DS_*
+# local environment variable file
 .env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env.*.local
 
-*.log
-logs
-**/*.backup.*
-**/*.back.*
+# log file
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
+# editor directory or files
+.idea
+.vscode
+*. his
+*.ntvs*
+* .njsproj
+*.sln
+*.sw?
 
-psd
-thumb
-sketch
+_note.md
