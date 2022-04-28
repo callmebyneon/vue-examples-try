@@ -3,6 +3,27 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "keywords": [
+    "vue",
+    "Vue",
+    "todo app",
+    "shopping cart",
+    "async"
+  ],
+  "author": "2n.ayeon.yi@gmail.com",
+  "license": "ISC",
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -10,11 +31,15 @@
     "type": "git",
     "url": "git+https://github.com/callmebyneon/vue-examples-try.git"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "bugs": {
     "url": "https://github.com/callmebyneon/vue-examples-try/issues"
   },
-  "homepage": "https://github.com/callmebyneon/vue-examples-try#readme"
+  "homepage": "https://github.com/callmebyneon/vue-examples-try#readme",
+  "devDependencies": {
+    "vue-loader": "^17.0.0",
+    "vue-template-compiler": "^2.6.14",
+    "webpack": "^5.72.0",
+    "webpack-cli": "^4.9.2",
+    "webpack-dev-server": "^4.8.1"
+  }
 }
