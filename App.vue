@@ -1,22 +1,48 @@
 <script>
+import GlobalNav from './components/Layout/GlobalNav';
+import TodoApp from './components/Todo/TodoApp';
+
 export default {
-  data() {
-    return {
-      greeting: 'Hello World!'
-    }
+  components: {
+    GlobalNav,
+    TodoApp
   }
 }
 </script>
 
 <template>
-  <h1>{{ greeting }}</h1>
+  <global-nav />
+  <router-view></router-view>
 </template>
 
 <style lang="scss">
-$color: red;
+  #app {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    min-height: 100vh;
+    position: relative;
 
-h1 {
-  color: $color;
-  display: flex;
-}
+    .app-content-box {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      min-width: 460px;
+      padding: 60px 1rem 1rem;
+      position: relative;
+      
+      & > * {
+        display: block;
+        width: 100%;
+      }
+
+      & > h1 {
+        margin: 2rem 0;
+        text-align: center
+      }
+    }
+  }
 </style>
