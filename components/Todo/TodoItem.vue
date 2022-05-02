@@ -87,7 +87,8 @@
         @keyup.enter="editedTodo"
         @keyup.esc="offEditMode"
       />
-      
+      <!-- TODO: @keyup.esc 이 동작하지 않는 현상 수정 필요 -->
+
       <!-- <div class="item__actions">
         <button key="compelete" @click="editedTodo">완료</button>
         <button key="cancel" @click="offEditMode">취소</button>
