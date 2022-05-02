@@ -11,6 +11,7 @@ module.exports = (env, opts) => {
 		resolve: {
 			extensions: ['.js', '.vue'],
 			fallback: {
+				fs: false,
 				path: require.resolve('path-browserify'),
 			},
 		},

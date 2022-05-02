@@ -33,33 +33,37 @@
       }
     },
     methods: {
+      onEditMode () {
+        this.editedTitle = this.todo.title;
+        this.isEditMode = true;
+        // Vue.js가 데이터 변경 후 DOM 업데이트를 마칠 때까지 기다림.
+        this.$nextTick(() => {
+          this.$refs.titleInput.focus();
+        });
+      },
+      offEditMode () {
+        console.log('off the edit mode');
+        this.isEditMode = false;
+      },
       editedTodo () {
+        // 수정한 내용이 있는 경우만 저장!
         if (this.todo.title !== this.editedTitle) {
           this.updateTodo({
             title: this.editedTitle,
             updatedAt: new Date()
-          });
+          })
         }
-
+        // 수정 모드 종료.
         this.offEditMode();
       },
-      onEditMode () {
-        this.editedTitle = this.todo.title;
-        this.isEditMode = true;
-
-        // 위 코드로 Vue.js가 데이터 변경 후 DOM 업데이트를 마칠 때까지 기다린 후 nextTick callback 실행
-        this.$nextTick(() => {
-          this.$refs.titleInput.focus();
+      updateTodo (value) {
+        this.$store.dispatch('todoApp/updateTodo', {
+          todo: this.todo,
+          value
         })
       },
-      offEditMode () {
-        this.isEditMode = false;
-      },
-      updateTodo (value) {
-        this.$emit('update-todo', this.todo, value)
-      },
       deleteTodo () {
-        this.$emit('delete-todo', this.todo)
+        this.$store.dispatch('todoApp/deleteTodo', this.todo)
       }
     }
   }
@@ -80,8 +84,8 @@
         :value="editedTitle"
         type="text"
         @input="editedTitle = $event.target.value"
-        @keypress.enter="editedTodo"
-        @keypress.esc="offEditMode"
+        @keyup.enter="editedTodo"
+        @keyup.esc="offEditMode"
       />
       
       <!-- <div class="item__actions">
@@ -119,10 +123,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 10px;
+    margin-bottom: 1rem;
 
     &:first-of-type {
-      margin-top: 10px;
+      margin-top: 1rem;
     }
 
     .item__inner {
@@ -166,7 +170,7 @@
           &:checked {
             &:after {
               background-color: #808080;
-              border-color: 1px solid #fefefe;
+              border: 1px solid #fefefe;
             }
           }
         }
@@ -192,7 +196,8 @@
     }
     
     .item__date {
-      font-size: 12px
+      font-size: 10px;
+      color: #808080
     }
 
     .item__actions {

@@ -1,7 +1,10 @@
 <script>
-import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
-import TodoCreator from '../components/Todo/TodoCreator'
-import TodoItem from '../components/Todo/TodoItem'
+import { createNamespacedHelpers } from 'vuex';
+import TodoCreator from '../components/Todo/TodoCreator';
+import TodoItem from '../components/Todo/TodoItem';
+
+const { mapState, mapGetters, mapMutations, mapActions } = createNamespacedHelpers('todoApp');
+
 export default {
   name: 'TodoApp',
   components: {
@@ -9,11 +12,12 @@ export default {
     TodoItem
   },
   computed: {
-    ...mapState('todoApp', [
+    ...mapState([
       'db',
-      'todos'
+      'todos',
+      'filter'
     ]),
-    ...mapGetters('todoApp', [
+    ...mapGetters([
       'filteredTodos',
       'total',
       'activeCount',
@@ -22,29 +26,26 @@ export default {
     allDone: {
       get () {
         // 전체 항목 개수와 완료된 항목 개수가 일치하고 항목 개수가 1개 이상인 경우.
-        return this.total === this.completedCount && this.total > 0
+        return (this.total === this.completedCount) && this.total > 0
       },
       set (checked) {
         this.completeAll(checked)
       }
     }
   },
-  watch: {
-    $route () {
-      this.updateFilter(this.$route.params.id)
-    }
-  },
   created () {
-    this.initDB()
+    console.log('Todo app created!');
+    this.initDB();
   },
   methods: {
-    ...mapMutations('todoApp', [
+    ...mapMutations([
       'updateFilter'
     ]),
-    ...mapActions('todoApp', [
+    ...mapActions([
       'initDB',
       'completeAll',
-      'clearCompleted'
+      'clearCompleted',
+      'changeFilter'
     ]),
   }
 }
@@ -54,7 +55,7 @@ export default {
   <div class="todo-app app-content-box">
     <h1>todos</h1>
     <div class="todo-header">
-      <todo-creator @create-todo="createTodo" />
+      <todo-creator />
       <div class="actions">
         <input 
           v-model="allDone"
@@ -71,14 +72,12 @@ export default {
         v-for="todo in filteredTodos"
         :key="todo.id"
         :todo="todo"
-        @update-todo="updateTodo"
-        @delete-todo="deleteTodo"
       />
     </div>
     <hr />
     <div class="todo-app__footer">
       <div class="active-count">
-        <b>{{ activeCount }}</b> item{{ activeCount > 1 ? 's' : null }} left
+        <b>{{ activeCount || 0 }}</b> item{{ activeCount > 1 ? 's' : null }} left
       </div>
       <div class="list-filters">
         <button
@@ -95,8 +94,8 @@ export default {
         >Completed</button>
       </div>
       <div class="delete-completed">
-        <button>
-          완료된 항목 삭제
+        <button @click="clearCompleted">
+          Clear completed
         </button>
       </div>
     </div>
@@ -107,6 +106,7 @@ export default {
   .todo-app {
     .todo-header {
       position: relative;
+      margin-bottom: 0.5rem;
 
       .actions {
         position: absolute;
@@ -140,13 +140,13 @@ export default {
             &:before {
               content: '';
               display: block;
-              width: 60%;
+              width: 56%;
               height: 25%;
               border-left: 3px solid #fefefe;
               border-bottom: 3px solid #fefefe;
               transform: rotate(-45deg);
               position: relative;
-              top: -1px;
+              top: -2px;
             }
 
             // tooltip
@@ -186,10 +186,41 @@ export default {
         }
       }
     }
-    .list-filters {
-      button.active {
-        font-weight: bold
+
+    .todo-app__footer {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 14px;
+      
+      button {
+        padding: 0 1em;
+        font-size: 12px;
       }
+      .list-filters {
+        button {
+          border-right-width: 0;
+          border-radius: 0;
+          margin: 0;
+
+          &:first-of-type {
+            border-radius: 4px 0 0 4px;
+          }
+          &:last-of-type {
+            border-right-width: 1px;
+            border-radius: 0 4px 4px 0;
+          }
+          &.active {
+            background: #CBC8C8;
+            color: #808080;
+            font-weight: bold;
+            letter-spacing: -0.016em;
+          }
+  
+        }
+      }
+
     }
   }
 </style>

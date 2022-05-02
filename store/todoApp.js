@@ -1,4 +1,5 @@
-import { Low, LocalStorage } from 'lowdb';
+import low from 'lowdb';
+import LocalStorage from 'lowdb/adapters/LocalStorage';
 import _find from 'lodash/find';
 import _findIndex from 'lodash/findIndex';
 import _assign from 'lodash/assign';
@@ -76,23 +77,28 @@ const mutations = {
 	updateFilter(state, filter) {
 		state.filter = filter;
 	},
+	// updateState(state, payload) {
+	// 	Object.keys(payload).forEach((key) => {
+	// 		state[key] = payload[key];
+	// 	});
+	// },
 };
 
 const actions = {
 	initDB({ state, commit }) {
 		const adapter = new LocalStorage('todo-app'); // DB name
-		commit('assignDB', new Low(adapter));
-
+		commit('assignDB', low(adapter));
+		console.log('init DB');
 		const hasTodos = state.db
 			.has('todos') // Collection name
 			.value();
 
-		// 기존에 저장된 DB가 있는지 확인
+		// Check if there is an existing saved DB
 		if (hasTodos) {
-			// 깊은 배열 복사, `this.todos`를 수정할 때 `this.db.getState().todos`를 직접 참조하는 문제를 방지할 수 있습니다.
+			// Deep array copy, avoid the problem of directly referencing `this.db.getState().todos` when modifying `this.todos`.
 			commit('assignTodos', _cloneDeep(state.db.getState().todos));
 		} else {
-			// Local DB 초기화
+			// Initialize Local DB
 			state.db
 				.defaults({
 					todos: state.todos,
@@ -102,7 +108,7 @@ const actions = {
 	},
 	createTodo({ state, commit }, title) {
 		const newTodo = {
-			id: cryptoRandomString({ length: 10 }),
+			id: Date.now(),
 			title,
 			createdAt: new Date(),
 			updatedAt: new Date(),
@@ -168,14 +174,15 @@ const actions = {
 			}
 		});
 	},
+	changeFilter({ state, commit }, filter) {
+		commit('updateFilter', filter);
+	},
 };
 
 export default {
-	init: {
-		namespaced: true,
-		state,
-		getters,
-		mutations,
-		actions,
-	},
+	namespaced: true,
+	state,
+	getters,
+	mutations,
+	actions,
 };

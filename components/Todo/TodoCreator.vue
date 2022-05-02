@@ -1,21 +1,30 @@
 <script>
   export default {
+    name: 'TodoCreator',
     data () {
       return {
         title: '',
+        invalidTitle: false,
         placeholder: 'What needs to be done?'
       }
     },
     methods: {
       createTodo () {
-        const validatedTitle = this.title && this.title.trim();
+        if (this.invalidTitle === false) {
+          this.$store.dispatch('todoApp/createTodo', this.title);
+          this.title = '';
+        }
+      },
+      handleInputChange (event) {
+        const validatedTitle = event.target.value.trim();
         if (!validatedTitle) {
           this.title = this.title.trim();
+          this.invalidTitle = true;
           return;
         }
-        
-        this.$emit('create-todo', this.title);
-        this.title = '';
+
+        this.title = event.target.value;
+        if (this.invalidTitle) this.invalidTitle = false;
       }
     }
   }
@@ -24,10 +33,11 @@
 <template>
   <div class="todo-text-input">
     <input
+      :class="{ invalid: invalidTitle === true }"
       :value="title"
       :placeholder="placeholder"
       type="text"
-      @input="title = $event.target.value"
+      @Input="handleInputChange"
       @keypress.enter="createTodo"
     >
   </div>
@@ -38,7 +48,7 @@
 
     input[type='text'] {
       width: 100%;
-      padding: 0.5em 1em 0.5em 3em;
+      padding: 0.5em 1em 0.5em 2.6em;
       font-size: 1rem;
       border: 1px solid #4f4f4f;
       border-radius: 6px;

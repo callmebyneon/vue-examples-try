@@ -33,7 +33,7 @@ export default {
       position: relative;
       
       & > * {
-        display: block;
+        // display: block;
         width: 100%;
       }
 
