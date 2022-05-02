@@ -1,11 +1,9 @@
 <script>
 import GlobalNav from './components/Layout/GlobalNav';
-import TodoApp from './components/Todo/TodoApp';
 
 export default {
   components: {
-    GlobalNav,
-    TodoApp
+    GlobalNav
   }
 }
 </script>

@@ -1,53 +1,51 @@
 <script>
-import TodoCreator from './TodoCreator';
-import TodoItem from './TodoItem';
-
+import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
+import TodoCreator from '../components/Todo/TodoCreator'
+import TodoItem from '../components/Todo/TodoItem'
 export default {
+  name: 'TodoApp',
   components: {
     TodoCreator,
     TodoItem
   },
+  computed: {
+    ...mapState('todoApp', [
+      'db',
+      'todos'
+    ]),
+    ...mapGetters('todoApp', [
+      'filteredTodos',
+      'total',
+      'activeCount',
+      'completedCount'
+    ]),
+    allDone: {
+      get () {
+        // 전체 항목 개수와 완료된 항목 개수가 일치하고 항목 개수가 1개 이상인 경우.
+        return this.total === this.completedCount && this.total > 0
+      },
+      set (checked) {
+        this.completeAll(checked)
+      }
+    }
+  },
+  watch: {
+    $route () {
+      this.updateFilter(this.$route.params.id)
+    }
+  },
   created () {
-    this.initDB();
+    this.initDB()
   },
   methods: {
-    createTodo (title) {
-      const newTodo = {
-        id: Date.now(),
-        title: title,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        done: false
-      }
-      console.log(newTodo)
-
-      const DB = { ...JSON.parse(this.db.getItem('todo-app')) };
-      DB.todos.push(newTodo);
-
-      this.db.setItem("todo-app", JSON.stringify(DB));
-    },
-    updateTodo (props) {
-      console.log('updateTodo',props);
-      const DB = { ...JSON.parse(this.db.getItem('todo-app')) };
-      DB.todos = [
-        ...this.todos.filter(todo => todo.id !== props.id),
-        props
-      ];
-      this.todos = DB.todos;
-      this.db.setItem("todo-app", JSON.stringify(DB));
-      console.log(this.todos)
-    },
-    deleteTodo (props) {
-      console.log(props);
-    },
-    changeFilter (filter) {
-      this.filter = filter;
-    },
-    completeAll (checked) {
-      // update DB
-      
-      // update todos state
-    }
+    ...mapMutations('todoApp', [
+      'updateFilter'
+    ]),
+    ...mapActions('todoApp', [
+      'initDB',
+      'completeAll',
+      'clearCompleted'
+    ]),
   }
 }
 </script>

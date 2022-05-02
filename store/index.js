@@ -21,3 +21,5 @@ mutations: {},
 ? 일반 로직(비동기O), state 값 직접 변경 X
 actions: {},
 */
+
+export default store;

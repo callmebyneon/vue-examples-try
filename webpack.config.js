@@ -9,7 +9,10 @@ require('@babel/polyfill');
 module.exports = (env, opts) => {
 	const config = {
 		resolve: {
-			extensions: ['.vue', '.js'],
+			extensions: ['.js', '.vue'],
+			fallback: {
+				path: require.resolve('path-browserify'),
+			},
 		},
 		entry: {
 			app: ['@babel/polyfill', path.join(__dirname, 'main.js')],
@@ -22,12 +25,7 @@ module.exports = (env, opts) => {
 			rules: [
 				{
 					test: /\.vue$/,
-					loader: 'vue-loader',
-				},
-				{
-					test: /\.js$/,
-					exclude: /node_modules/,
-					loader: 'babel-loader',
+					use: 'vue-loader',
 				},
 				{
 					test: /\.css$/,
@@ -37,13 +35,20 @@ module.exports = (env, opts) => {
 					test: /\.scss$/,
 					use: ['vue-style-loader', 'css-loader', 'postcss-loader', 'sass-loader'],
 				},
+				{
+					test: /\.js$/,
+					exclude: /node_modules/,
+					use: {
+						loader: 'babel-loader',
+					},
+				},
 			],
 		},
 		plugins: [
-			new VueLoaderPlugin(),
 			new HtmlWebpackPlugin({
 				template: path.join(__dirname, 'index.html'),
 			}),
+			new VueLoaderPlugin(),
 			new CopyPlugin({
 				patterns: [{ from: 'assets/', to: '' }],
 			}),

@@ -1,5 +1,5 @@
 import { createWebHistory, createRouter } from 'vue-router';
-import TodoApp from '../components/Todo/TodoApp';
+import TodoApp from '../views/TodoApp';
 import CartApp from '../components/Cart/CartApp';
 import AsyncApp from '../components/Async/AsyncApp';
 import NoMatch from '../components/Layout/NoMatch';
