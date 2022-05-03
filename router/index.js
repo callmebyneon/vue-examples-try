@@ -1,7 +1,7 @@
 import { createWebHistory, createRouter } from 'vue-router';
 import TodoApp from '../views/TodoApp';
-import CartApp from '../components/Cart/CartApp';
-import AsyncApp from '../components/Async/AsyncApp';
+import CartApp from '../views/CartApp';
+import AsyncApp from '../views/AsyncApp';
 import NoMatch from '../components/Layout/NoMatch';
 
 const history = createWebHistory();

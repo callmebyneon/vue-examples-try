@@ -1,6 +1,8 @@
 import { createStore } from 'vuex';
 
 import todoApp from './todoApp';
+import asyncApp from './asyncApp';
+import cartApp from './cartApp';
 
 /*
 ? Data
@@ -24,5 +26,7 @@ export default createStore({
 	strict: process.env.NODE_ENV !== 'production',
 	modules: {
 		todoApp,
+		asyncApp,
+		cartApp,
 	},
 });
