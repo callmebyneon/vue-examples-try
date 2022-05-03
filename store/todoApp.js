@@ -106,7 +106,7 @@ const actions = {
 				.write();
 		}
 	},
-	createTodo({ state, commit }, title) {
+	createTodo({ commit }, title) {
 		const newTodo = {
 			id: Date.now(),
 			title,
@@ -166,7 +166,7 @@ const actions = {
 
 		commit('assignTodos', _cloneDeep(newTodos));
 	},
-	clearCompleted({ state, commit, dispatch }) {
+	clearCompleted({ state, dispatch }) {
 		// Lodash 라이브러리 활용
 		_forEachRight(state.todos, (todo) => {
 			if (todo.done) {
@@ -174,7 +174,7 @@ const actions = {
 			}
 		});
 	},
-	changeFilter({ state, commit }, filter) {
+	changeFilter({ commit }, filter) {
 		commit('updateFilter', filter);
 	},
 };
