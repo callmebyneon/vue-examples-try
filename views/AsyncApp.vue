@@ -15,7 +15,3 @@ export default {
     <post-picker />
   </div>
 </template>
-
-<style lang="scss">
-  
-</style>

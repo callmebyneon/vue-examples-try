@@ -11,10 +11,10 @@ export default {
         <router-link to="/">todos</router-link>
       </li>
       <li>
-        <router-link to="/cart">shopping cart</router-link>
+        <router-link to="/async">async load</router-link>
       </li>
       <li>
-        <router-link to="/async">async load</router-link>
+        <router-link to="/cart">shopping cart</router-link>
       </li>
       <li>
         <router-link to="/ismatch"><i>Is this existed page?</i></router-link>
