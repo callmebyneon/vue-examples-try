@@ -2,6 +2,7 @@ import _find from 'lodash/find';
 import _findIndex from 'lodash/findIndex';
 import _assign from 'lodash/assign';
 import _cloneDeep from 'lodash/cloneDeep';
+import _forEach from 'lodash/forEach';
 import _forEachRight from 'lodash/forEachRight';
 
 const state = () => ({
@@ -44,15 +45,15 @@ const mutations = {
 	assignDB(state, db) {
 		state.db = db;
 	},
-	createDB(state, newTodo) {
-		state.db.get('todos').push(newTodo).write();
-	},
-	updateDB(state, { todo, value }) {
-		state.db.get('todos').find({ id: todo.id }).assign(value).write();
-	},
-	deleteDB(state, todo) {
-		state.db.get('todos').remove({ id: todo.id }).write();
-	},
+	// createDB(state, newTodo) {
+	// 	state.db.get('todos').push(newTodo).write();
+	// },
+	// updateDB(state, { todo, value }) {
+	// 	state.db.get('todos').find({ id: todo.id }).assign(value).write();
+	// },
+	// deleteDB(state, todo) {
+	// 	state.db.get('todos').remove({ id: todo.id }).write();
+	// },
 	assignTodos(state, todos) {
 		state.todos = todos;
 	},
@@ -65,6 +66,7 @@ const mutations = {
 		_assign(foundTodo, value);
 	},
 	updateTodo(state, { todo, key, value }) {
+		console.log(`${todo[key]} = ${value}`)
 		todo[key] = value;
 	},
 	deleteTodo(state, index) {
@@ -73,12 +75,7 @@ const mutations = {
 	},
 	updateFilter(state, filter) {
 		state.filter = filter;
-	},
-	// updateState(state, payload) {
-	// 	Object.keys(payload).forEach((key) => {
-	// 		state[key] = payload[key];
-	// 	});
-	// },
+	}
 };
 
 const actions = {
@@ -129,28 +126,18 @@ const actions = {
 		}
 	},
 	completeAll({ state, commit }, checked) {
-		// const newTodos = state.db
-		// 	.get('todos')
-		// 	.forEach((todo) => {
-		// 		commit('updateTodo', {
-		// 			todo,
-		// 			key: 'done',
-		// 			value: checked,
-		// 		});
-		// 	})
-		// 	.write(); // 수정된 `todos` 배열을 반환합니다.
-		// commit('assignTodos', _cloneDeep(newTodos));
-			
-		state.todos.forEach(todo => {
-			commit('updateTodo', {
-				todo,
-				key: 'done',
-				vlaue: checked
-			})
+		_forEach(state.todos, (todo) => {
+			if (Boolean(todo.done) !== checked) {
+				console.log(todo.done, checked);
+				commit('updateTodo', {
+					todo,
+					key: 'done',
+					value: checked
+				})
+			}
 		});
 	},
 	clearCompleted({ state, dispatch }) {
-		// Lodash 라이브러리 활용
 		_forEachRight(state.todos, (todo) => {
 			if (todo.done) {
 				dispatch('deleteTodo', todo);
