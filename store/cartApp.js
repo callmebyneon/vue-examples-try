@@ -1,8 +1,18 @@
-const state = () => ({});
+import shop from '../api/shop';
 
-const getters = {};
+const state = () => ({
+	cart: [],
+	products: null,
+});
+
+const getters = {
+	//
+};
 
 const mutations = {
+	loadProducts(state, payload) {
+		state.products = payload;
+	},
 	updateState(state, payload) {
 		Object.keys(payload).forEach((key) => {
 			state[key] = payload[key];
@@ -10,7 +20,17 @@ const mutations = {
 	},
 };
 
-const actions = {};
+const actions = {
+	initDB({ state, commit }) {
+		if (state.products == null) {
+			const products = shop.getProducts();
+
+			console.log('products', products);
+			commit('loadProducts', products);
+		}
+	},
+	onCheckoutClicked(context, payload) {},
+};
 
 export default {
 	namespaced: true,
