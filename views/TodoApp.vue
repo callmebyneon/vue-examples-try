@@ -26,11 +26,15 @@ export default {
     allDone: {
       get () {
         // 전체 항목 개수와 완료된 항목 개수가 일치하고 항목 개수가 1개 이상인 경우.
-        return (this.total === this.completedCount) && this.total > 0
+        return (this.total === this.completedCount) && this.total > 0;
       },
       set (checked) {
-        this.completeAll(checked)
+        this.completeAll(checked);
       }
+    },
+    hasTodoItem () {
+      console.log(this.todos.length > 0)
+      return this.todos.length > 0;
     }
   },
   created () {
@@ -65,39 +69,42 @@ export default {
         <label for="todo__toggle-all" class="toggle-all__label"></label>
       </div>
     </div>
-    <hr />
-    <div class="todo-app__list">
-      <todo-item
-        v-for="todo in filteredTodos"
-        :key="todo.id"
-        :todo="todo"
-      />
+    <div v-if="hasTodoItem">
+      <hr />
+      <div class="todo-app__list">
+        <todo-item
+          v-for="todo in filteredTodos"
+          :key="todo.id"
+          :todo="todo"
+        />
+      </div>
+      <hr />
+      <div class="todo-app__footer">
+        <div class="active-count">
+          <b>{{ activeCount || 0 }}</b> item{{ activeCount > 1 ? 's' : null }} left
+        </div>
+        <div class="list-filters">
+          <button
+            :class="{ active: filter === 'all' }"
+            @click="changeFilter('all')"
+          >All</button>
+          <button
+            :class="{ active: filter === 'active' }"
+            @click="changeFilter('active')"
+          >Active</button>
+          <button
+            :class="{ active: filter === 'completed' }"
+            @click="changeFilter('completed')"
+          >Completed</button>
+        </div>
+        <div class="delete-completed">
+          <button @click="clearCompleted">
+            Clear completed
+          </button>
+        </div>
+      </div>
     </div>
-    <hr />
-    <div class="todo-app__footer">
-      <div class="active-count">
-        <b>{{ activeCount || 0 }}</b> item{{ activeCount > 1 ? 's' : null }} left
-      </div>
-      <div class="list-filters">
-        <button
-          :class="{ active: filter === 'all' }"
-          @click="changeFilter('all')"
-        >All</button>
-        <button
-          :class="{ active: filter === 'active' }"
-          @click="changeFilter('active')"
-        >Active</button>
-        <button
-          :class="{ active: filter === 'completed' }"
-          @click="changeFilter('completed')"
-        >Completed</button>
-      </div>
-      <div class="delete-completed">
-        <button @click="clearCompleted">
-          Clear completed
-        </button>
-      </div>
-    </div>
+    <div v-else><em style="display:block;text-align:center;">↑ Add some todo item.</em></div>
   </div>
 </template>
 
