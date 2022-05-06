@@ -21,10 +21,13 @@ const mutations = {
 };
 
 const actions = {
-	initDB({ commit }) {
-		const products = shop.getProducts();
-		console.log(products);
-		commit('loadProducts', products);
+	initDB({ state, commit }) {
+		if (state.products == null) {
+			const products = shop.getProducts();
+
+			console.log('products', products);
+			commit('loadProducts', products);
+		}
 	},
 	onCheckoutClicked(context, payload) {},
 };

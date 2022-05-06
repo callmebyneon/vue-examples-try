@@ -86,19 +86,17 @@ const mutations = {
 
 const actions = {
 	initDB({ state, commit }) {
-		const adapter = new LocalStorage('todo-app'); // DB name
+		const adapter = new LocalStorage('todo-app');
 		commit('assignDB', low(adapter));
-		console.log('init DB');
-		const hasTodos = state.db
-			.has('todos') // Collection name
-			.value();
 
-		// Check if there is an existing saved DB
+		const hasTodos = state.db.has('todos').value();
+
+		// 기존에 저장된 DB가 있는지 확인
 		if (hasTodos) {
-			// Deep array copy, avoid the problem of directly referencing `this.db.getState().todos` when modifying `this.todos`.
+			// 깊은 배열 복사, `this.todos`를 수정할 때 `this.db.getState().todos`를 직접 참조하는 문제를 방지할 수 있습니다.
 			commit('assignTodos', _cloneDeep(state.db.getState().todos));
 		} else {
-			// Initialize Local DB
+			// Local DB 초기화
 			state.db
 				.defaults({
 					todos: state.todos,
