@@ -1,11 +1,8 @@
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import Product from './Product';
 export default {
   name: 'MyCart',
-  props: {
-    products: Array
-  },
   components: {
     Product
   },
@@ -15,7 +12,10 @@ export default {
     },
     isEmpty () {
       return this.products?.length > 0
-    }
+    },
+    ...mapState('cartApp', [
+      'products'
+    ])
   },
   methods: {
     ...mapActions('cartApp', [

@@ -34,8 +34,7 @@ export default {
     }
   },
   created () {
-    console.log('Todo app created!');
-    this.initDB();
+    console.log('%c Todo app created!', 'color: yellow;');
   },
   methods: {
     ...mapMutations([

@@ -1,7 +1,9 @@
 <script>
+import { createNamespacedHelpers } from 'vuex';
 import ProductItem from '../components/Cart/ProductItem';
 import MyCart from '../components/Cart/MyCart';
-import { mapActions, mapState } from 'vuex';
+
+const { mapState, mapActions } = createNamespacedHelpers('cartApp');
 
 export default {
   name: 'CartApp',
@@ -17,10 +19,10 @@ export default {
   },
   created () {
     this.initDB();
-    console.log('Cart app created!', this.products);
+    console.log('%c Cart app created!', 'color: yellow;');
   },
   methods: {
-    ...mapActions('cartApp', [
+    ...mapActions([
       'initDB',
     ])
   }
@@ -42,7 +44,7 @@ export default {
     <hr />
     <div class="cart-app__cart">
       <h3>Your Cart</h3>
-      <!-- <my-cart :products="products" /> -->
+      <!-- <my-cart /> -->
     </div>
   </div>
 </template>

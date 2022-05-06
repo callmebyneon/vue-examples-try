@@ -1,5 +1,3 @@
-import low from 'lowdb';
-import LocalStorage from 'lowdb/adapters/LocalStorage';
 import _find from 'lodash/find';
 import _findIndex from 'lodash/findIndex';
 import _assign from 'lodash/assign';
@@ -7,7 +5,6 @@ import _cloneDeep from 'lodash/cloneDeep';
 import _forEachRight from 'lodash/forEachRight';
 
 const state = () => ({
-	db: null,
 	todos: [
 		{
 			id: Date.now(),
@@ -85,25 +82,6 @@ const mutations = {
 };
 
 const actions = {
-	initDB({ state, commit }) {
-		const adapter = new LocalStorage('todo-app');
-		commit('assignDB', low(adapter));
-
-		const hasTodos = state.db.has('todos').value();
-
-		// 기존에 저장된 DB가 있는지 확인
-		if (hasTodos) {
-			// 깊은 배열 복사, `this.todos`를 수정할 때 `this.db.getState().todos`를 직접 참조하는 문제를 방지할 수 있습니다.
-			commit('assignTodos', _cloneDeep(state.db.getState().todos));
-		} else {
-			// Local DB 초기화
-			state.db
-				.defaults({
-					todos: state.todos,
-				})
-				.write();
-		}
-	},
 	createTodo({ commit }, title) {
 		const newTodo = {
 			id: Date.now(),
@@ -115,7 +93,7 @@ const actions = {
 
 		try {
 			// DB에 저장
-			commit('createDB', newTodo);
+			// commit('createDB', newTodo);
 			// 로컬(local)에 반영
 			commit('pushTodo', newTodo);
 		} catch (error) {
@@ -127,7 +105,7 @@ const actions = {
 
 		try {
 			// DB에 저장
-			commit('updateDB', payload);
+			// commit('updateDB', payload);
 			// Lodash 라이브러리 활용
 			const foundTodo = _find(state.todos, { id: todo.id });
 			commit('assignTodo', {
@@ -141,7 +119,7 @@ const actions = {
 	deleteTodo({ state, commit }, todo) {
 		try {
 			// DB에 저장
-			commit('deleteDB', todo);
+			// commit('deleteDB', todo);
 			// 로컬(local)에 반영
 			// Lodash 라이브러리 활용
 			const foundIndex = _findIndex(state.todos, { id: todo.id });
@@ -151,18 +129,25 @@ const actions = {
 		}
 	},
 	completeAll({ state, commit }, checked) {
-		const newTodos = state.db
-			.get('todos')
-			.forEach((todo) => {
-				commit('updateTodo', {
-					todo,
-					key: 'done',
-					value: checked,
-				});
+		// const newTodos = state.db
+		// 	.get('todos')
+		// 	.forEach((todo) => {
+		// 		commit('updateTodo', {
+		// 			todo,
+		// 			key: 'done',
+		// 			value: checked,
+		// 		});
+		// 	})
+		// 	.write(); // 수정된 `todos` 배열을 반환합니다.
+		// commit('assignTodos', _cloneDeep(newTodos));
+			
+		state.todos.forEach(todo => {
+			commit('updateTodo', {
+				todo,
+				key: 'done',
+				vlaue: checked
 			})
-			.write(); // 수정된 `todos` 배열을 반환합니다.
-
-		commit('assignTodos', _cloneDeep(newTodos));
+		});
 	},
 	clearCompleted({ state, dispatch }) {
 		// Lodash 라이브러리 활용
