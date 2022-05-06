@@ -73,12 +73,7 @@ const mutations = {
 	},
 	updateFilter(state, filter) {
 		state.filter = filter;
-	},
-	// updateState(state, payload) {
-	// 	Object.keys(payload).forEach((key) => {
-	// 		state[key] = payload[key];
-	// 	});
-	// },
+	}
 };
 
 const actions = {
