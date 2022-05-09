@@ -17,7 +17,7 @@ export default {
       'products'
     ])
   },
-  created () {
+  mounted () {
     this.initDB();
     console.log('%c Cart app created!', 'color: yellow;');
   },
@@ -44,7 +44,7 @@ export default {
     <hr />
     <div class="cart-app__cart">
       <h3>Your Cart</h3>
-      <!-- <my-cart /> -->
+      <my-cart />
     </div>
   </div>
 </template>
