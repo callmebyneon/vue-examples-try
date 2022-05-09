@@ -10,6 +10,9 @@ But, applyed vue syntax is Vue 3.
 
 ```
 vue-examples-try/
+ ┣ 📂api
+ ┃ ┣ products.json
+ ┃ ┗ shop.js
  ┣ 📂assets
  ┃ ┣ favicon.ico
  ┃ ┗ favicon.png
@@ -17,6 +20,8 @@ vue-examples-try/
  ┃ ┣ 📂Async
  ┃ ┃ ┗ PostPicker.vue
  ┃ ┣ 📂Cart
+ ┃ ┃ ┣ MyCart.vue
+ ┃ ┃ ┣ Product.vue
  ┃ ┃ ┗ ProductItem.vue
  ┃ ┣ 📂Layout
  ┃ ┃ ┣ GlobalNav.vue
