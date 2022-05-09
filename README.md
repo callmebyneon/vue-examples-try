@@ -1,6 +1,7 @@
 # vue-examples-try
 
-Compairing with this and the codes with [my redux-examples-try repo](https://github.com/callmebyneon/redux-examples-try)
+This project was created for compairing with react code that same pages.
+Compairing with this and the codes with [my redux-examples-try repo](https://github.com/callmebyneon/redux-examples-try).
 
 And this branch's setting follows below repository.
 
