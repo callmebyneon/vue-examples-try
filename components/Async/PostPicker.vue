@@ -70,6 +70,7 @@ export default {
         Last updated at {{ new Date(lastUpdated).toLocaleTimeString() }}.
       </span>
       <button
+        v-if="!isFetching"
         class="--small"
         @click="refreshPosts"
       >refresh</button>
