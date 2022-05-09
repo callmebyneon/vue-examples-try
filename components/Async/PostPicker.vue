@@ -1,7 +1,7 @@
 <script>
 import { createNamespacedHelpers } from 'vuex';
 
-const { mapState, mapGetters, mapActions } = createNamespacedHelpers('asyncApp');
+const { mapState, mapGetters, mapMutations, mapActions } = createNamespacedHelpers('asyncApp');
 
 export default {
   name: 'PostPicker',
@@ -13,6 +13,9 @@ export default {
         { text: 'Front-end', value: 'frontend' }
       ]
     }
+  },
+  mounted () {
+    this.getPosts();
   },
   computed: {
     selectedSubreddit: {
@@ -27,16 +30,27 @@ export default {
       }
     },
     ...mapState([
-      'isFetching',
-      'didInvalidate',
       'items',
-      'lastUpdated'
     ]),
     ...mapGetters([
+      'isFetching',
+      'lastUpdated',
+      'selectedPosts',
       'isEmpty'
     ])
   },
   methods: {
+    refreshPosts () {
+      this.updatePostItems({
+        [this.selectedSubreddit]: {
+          didInvalidate: true
+        }
+      });
+      this.getPosts();
+    },
+    ...mapMutations([
+      'updatePostItems'
+    ]),
     ...mapActions([
       'getPosts'
     ])
@@ -57,7 +71,7 @@ export default {
       </span>
       <button
         class="--small"
-        @click="getPosts"
+        @click="refreshPosts"
       >refresh</button>
     </p>
   </div>
@@ -68,9 +82,9 @@ export default {
     <ul v-else-if="isEmpty">It's Empty.</ul>
     <ul v-else>
       <li
-        v-for="item in items"
-        :key="item.id"
-      >{{ item.title }}</li>
+        v-for="post in selectedPosts"
+        :key="post.id"
+      >{{ post.title }}</li>
     </ul>
   </div>
 </template>
