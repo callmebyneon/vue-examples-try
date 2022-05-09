@@ -7,31 +7,36 @@ export default {
     Product
   },
   computed: {
+    cartItems() {
+      return Object.values(this.cart);
+    },
     total () {
-      return this.products.price.reduce((prev, curr) => prev + curr, 10, 0).toFixed(2);
+      return this.cartItems.reduce((prev, curr) => prev + curr.price, 0).toFixed(2);
     },
     isEmpty () {
-      return this.products?.length > 0
+      return this.cartItems.reduce((prev, curr) => prev + parseInt(curr.inventory, 10), 0);
     },
     ...mapState('cartApp', [
-      'products'
+      'cart'
     ])
   },
   methods: {
     ...mapActions('cartApp', [
-      'onCheckoutClicked'
+      'onCheckout'
     ])
   }
 }
 </script>
 
 <template>
-  <product v-if="isEmpty" :product="product" />
-  <p v-else><em>Please add some products to cart.</em></p>
+  <div v-if="isEmpty">
+    <product v-for="item in cartItems" :key="item.id" :product="item" />
+  </div>
+  <div v-else><em>Please add some products to cart.</em></div>
   <p>Total: &#36;{{ total }}</p>
   <button
-    :disabled="isEmpty"
-    @click="onCheckoutClicked"
+    :disabled="!isEmpty"
+    @click="onCheckout"
   >
     Checkout
   </button>
