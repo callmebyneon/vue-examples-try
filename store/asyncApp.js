@@ -27,6 +27,7 @@ const actions = {
 		commit('updateState', {
 			isFetching: true,
 		});
+		console.log('%c GET post -loading', 'color:skyblue');
 		try {
 			const posts = await axios(`https://www.reddit.com/r/${state.selectedSubreddit}.json`)
 				.then((res) => res.data)
@@ -36,6 +37,7 @@ const actions = {
 				items: posts,
 				lastUpdated: Date.now(),
 			});
+			console.log('%c GET post -success', 'color:yellowgreen');
 		} catch (e) {
 			console.error(e);
 			commit('updateState', {
@@ -43,6 +45,7 @@ const actions = {
 				items: [],
 				lastUpdated: Date.now(),
 			});
+			console.log('%c GET post -failure', 'color:tomato');
 		}
 	},
 };
